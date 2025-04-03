@@ -4,9 +4,11 @@ import ListItem from "./ListItem";
 
 interface NewestPaneProps {
     items: TodoItem[]
+    onCheck: (id: number) => void
+    isChecked: (id: number) => boolean
 }
 
-const NewestPane: React.FC<NewestPaneProps> = ({items}) => {
+const NewestPane: React.FC<NewestPaneProps> = ({items, onCheck, isChecked}) => {
 
     const sortedItems = [... items].sort((a, b) => {
         const dateA = a.deadline ? new Date(a.deadline).getTime() : 0
@@ -22,8 +24,8 @@ const NewestPane: React.FC<NewestPaneProps> = ({items}) => {
                     <ListItem
                         key={item.id}
                         item={item}    
-                        isChecked={false}
-                        onCheck={() => {}}
+                        isChecked={isChecked(item.id)}
+                        onCheck={onCheck}
                     />
                 ))}
             </ListGroup>

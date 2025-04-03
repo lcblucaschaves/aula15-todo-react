@@ -8,6 +8,8 @@ const Main: React.FC = () => {
 
     const [items, setItems] = useState<TodoItem[]>([]);
 
+    const [checkedItems, setCheckedItems] = useState<{[id: number]: boolean}>({})
+
     function fetchItems() {
         todoRepository.list()
             .then((data) => {
@@ -20,6 +22,15 @@ const Main: React.FC = () => {
 
     useEffect(fetchItems, []);
 
+    const onCheck = (id: number) => {
+        console.log(`Changed check state for id ${id}`)
+        setCheckedItems({...checkedItems, [id]: !checkedItems[id]});
+    }
+
+    const isChecked = (id: number): boolean => {
+        return checkedItems[id];
+    }
+
     return (
         <main className="pt-4 pb-5">
             <Container fluid>
@@ -29,7 +40,7 @@ const Main: React.FC = () => {
                             <NavTabs />
                             <Tab.Content className="px-0 py-3 border border-top-0 bg-white rounded-bottom shadow">
                                 {/*TODO: Panes*/}
-                                <NewestPane items={items} />
+                                <NewestPane items={items} onCheck={onCheck} isChecked={isChecked} />
                             </Tab.Content>
                         </Tab.Container>
                     </Col>
